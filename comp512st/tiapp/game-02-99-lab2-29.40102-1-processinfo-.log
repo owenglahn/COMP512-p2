@@ -1,0 +1,190 @@
+Oct 20, 2022 2:47:16.921804000 PM comp512st.tiapp.TreasureIslandApp main INFO: Started with arguments : [lab2-29:40102, lab2-29:40102,lab2-27:40202, game-02-99, 2, 1]
+Oct 20, 2022 2:47:16.937167000 PM comp512.utils.FailCheck <init> INFO: Initializing failure check emulation setup....
+Oct 20, 2022 2:47:17.085264000 PM comp512.gcl.GCL <init> INFO: Host lab2-29/132.206.54.209:40102
+Oct 20, 2022 2:47:17.085791000 PM comp512.gcl.GCL <init> INFO: Initializing outbox despatcher threads.
+Oct 20, 2022 2:47:17.087095000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: lab2-29:40102: Starting outbox despatch thread for process.
+Oct 20, 2022 2:47:17.087519000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: lab2-27:40202: Starting outbox despatch thread for process.
+Oct 20, 2022 2:47:17.220874000 PM comp512.ti.TreasureIsland <init> INFO: Treasure Island initialized.
+Oct 20, 2022 2:47:41.487294000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : D
+Oct 20, 2022 2:47:41.489860000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@262b2c86
+Oct 20, 2022 2:47:41.499421000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@262b2c86
+Oct 20, 2022 2:47:41.502248000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@262b2c86
+Oct 20, 2022 2:47:41.509496000 PM comp512.gcl.GCL$InboxListener run INFO: Network connection request from  /132.206.54.209
+Oct 20, 2022 2:47:41.528085000 PM comp512.gcl.GCL$InboxListener run INFO: lab2-29:40102: Input stream set up for this process to receive incoming messages. Inet: /132.206.54.209
+Oct 20, 2022 2:47:41.530266000 PM comp512.gcl.GCL$GCLInbox run INFO: lab2-29:40102: Starting an inBox thread to receive messages from this process.
+Oct 20, 2022 2:47:41.536677000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@262b2c86]
+Oct 20, 2022 2:47:41.536677000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@262b2c86]
+Oct 20, 2022 2:47:41.559419000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@5bc338f1]
+Oct 20, 2022 2:47:41.560271000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@5bc338f1]
+Oct 20, 2022 2:47:41.560740000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, D]
+Oct 20, 2022 2:47:41.563373000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction D
+Oct 20, 2022 2:47:41.564745000 PM comp512.ti.TreasureIsland move INFO: Player A got treasure points 8
+Oct 20, 2022 2:47:51.896057000 PM comp512.gcl.GCL$InboxListener run INFO: Network connection request from  /132.206.54.207
+Oct 20, 2022 2:47:51.898441000 PM comp512.gcl.GCL$InboxListener run INFO: lab2-27:40202: Input stream set up for this process to receive incoming messages. Inet: /132.206.54.207
+Oct 20, 2022 2:47:51.899578000 PM comp512.gcl.GCL$GCLInbox run INFO: lab2-27:40202: Starting an inBox thread to receive messages from this process.
+Oct 20, 2022 2:47:51.902833000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4107829a]
+Oct 20, 2022 2:47:51.903296000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4107829a]
+Oct 20, 2022 2:47:51.903660000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, U]
+Oct 20, 2022 2:47:51.904014000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction U
+Oct 20, 2022 2:47:55.338683000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4fc064ca]
+Oct 20, 2022 2:47:55.339325000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4fc064ca]
+Oct 20, 2022 2:47:55.339666000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, L]
+Oct 20, 2022 2:47:55.339944000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction L
+Oct 20, 2022 2:47:55.340266000 PM comp512.ti.TreasureIsland move INFO: Player B got treasure points 3
+Oct 20, 2022 2:47:59.522890000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : U
+Oct 20, 2022 2:47:59.524164000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@11758f2a
+Oct 20, 2022 2:47:59.525089000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@11758f2a
+Oct 20, 2022 2:47:59.526476000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@11758f2a
+Oct 20, 2022 2:47:59.526627000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@11758f2a]
+Oct 20, 2022 2:47:59.527607000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@11758f2a]
+Oct 20, 2022 2:47:59.529229000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@5ffca751]
+Oct 20, 2022 2:47:59.530871000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@5ffca751]
+Oct 20, 2022 2:47:59.531827000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, U]
+Oct 20, 2022 2:47:59.532607000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction U
+Oct 20, 2022 2:48:00.500111000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : U
+Oct 20, 2022 2:48:00.501597000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@e720b71
+Oct 20, 2022 2:48:00.502365000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@e720b71
+Oct 20, 2022 2:48:00.503330000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@e720b71
+Oct 20, 2022 2:48:00.503485000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@e720b71]
+Oct 20, 2022 2:48:00.504295000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@e720b71]
+Oct 20, 2022 2:48:00.505768000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@1afe32ca]
+Oct 20, 2022 2:48:00.507618000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@1afe32ca]
+Oct 20, 2022 2:48:00.508530000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, U]
+Oct 20, 2022 2:48:00.509241000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction U
+Oct 20, 2022 2:48:00.510040000 PM comp512.ti.TreasureIsland move INFO: Player A got treasure points 5
+Oct 20, 2022 2:48:01.982371000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : R
+Oct 20, 2022 2:48:01.984208000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@1b26f7b2
+Oct 20, 2022 2:48:01.984922000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@1b26f7b2
+Oct 20, 2022 2:48:01.985735000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@1b26f7b2
+Oct 20, 2022 2:48:01.985893000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@1b26f7b2]
+Oct 20, 2022 2:48:01.986653000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@1b26f7b2]
+Oct 20, 2022 2:48:01.988010000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@69e88070]
+Oct 20, 2022 2:48:01.989520000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@69e88070]
+Oct 20, 2022 2:48:01.990347000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, R]
+Oct 20, 2022 2:48:01.991037000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction R
+Oct 20, 2022 2:48:02.672513000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : R
+Oct 20, 2022 2:48:02.672901000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@491cc5c9
+Oct 20, 2022 2:48:02.673101000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@491cc5c9
+Oct 20, 2022 2:48:02.673331000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@491cc5c9
+Oct 20, 2022 2:48:02.673378000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@491cc5c9]
+Oct 20, 2022 2:48:02.673563000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@491cc5c9]
+Oct 20, 2022 2:48:02.673968000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@2b2e290c]
+Oct 20, 2022 2:48:02.674363000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@2b2e290c]
+Oct 20, 2022 2:48:02.674554000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, R]
+Oct 20, 2022 2:48:02.674769000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction R
+Oct 20, 2022 2:48:02.674946000 PM comp512.ti.TreasureIsland move INFO: Player A got treasure points 6
+Oct 20, 2022 2:48:03.815619000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : U
+Oct 20, 2022 2:48:03.816049000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@74ad1f1f
+Oct 20, 2022 2:48:03.816214000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@74ad1f1f
+Oct 20, 2022 2:48:03.816406000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@74ad1f1f
+Oct 20, 2022 2:48:03.816459000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@74ad1f1f]
+Oct 20, 2022 2:48:03.816626000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@74ad1f1f]
+Oct 20, 2022 2:48:03.816979000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@11d2c517]
+Oct 20, 2022 2:48:03.817277000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@11d2c517]
+Oct 20, 2022 2:48:03.817473000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, U]
+Oct 20, 2022 2:48:03.817615000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction U
+Oct 20, 2022 2:48:03.817789000 PM comp512.ti.TreasureIsland move INFO: Player A got treasure points 9
+Oct 20, 2022 2:48:04.669998000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : U
+Oct 20, 2022 2:48:04.671031000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@6a1aab78
+Oct 20, 2022 2:48:04.671656000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@6a1aab78
+Oct 20, 2022 2:48:04.672247000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@6a1aab78
+Oct 20, 2022 2:48:04.672301000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@6a1aab78]
+Oct 20, 2022 2:48:04.672458000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@6a1aab78]
+Oct 20, 2022 2:48:04.672768000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@7ad1cd85]
+Oct 20, 2022 2:48:04.673041000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@7ad1cd85]
+Oct 20, 2022 2:48:04.673219000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, U]
+Oct 20, 2022 2:48:04.673336000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction U
+Oct 20, 2022 2:48:04.673564000 PM comp512.ti.TreasureIsland move INFO: Player A got treasure points 2
+Oct 20, 2022 2:48:06.902509000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : R
+Oct 20, 2022 2:48:06.903604000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : [Ljava.lang.Object;@462d5aee
+Oct 20, 2022 2:48:06.904173000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-29:40102. [Ljava.lang.Object;@462d5aee
+Oct 20, 2022 2:48:06.905226000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to lab2-27:40202. [Ljava.lang.Object;@462d5aee
+Oct 20, 2022 2:48:06.905422000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@462d5aee]
+Oct 20, 2022 2:48:06.906098000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@462d5aee]
+Oct 20, 2022 2:48:06.907462000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@579729af]
+Oct 20, 2022 2:48:06.908261000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-29:40102:val:[Ljava.lang.Object;@579729af]
+Oct 20, 2022 2:48:06.908985000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[1, R]
+Oct 20, 2022 2:48:06.909775000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 1 direction R
+Oct 20, 2022 2:48:06.910999000 PM comp512.ti.TreasureIsland move INFO: Player A got treasure points 7
+Oct 20, 2022 2:48:11.298909000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4bffe9ea]
+Oct 20, 2022 2:48:11.299370000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4bffe9ea]
+Oct 20, 2022 2:48:11.299734000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, D]
+Oct 20, 2022 2:48:11.300078000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction D
+Oct 20, 2022 2:48:13.394039000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@efd6ef1]
+Oct 20, 2022 2:48:13.394960000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@efd6ef1]
+Oct 20, 2022 2:48:13.395419000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, D]
+Oct 20, 2022 2:48:13.395743000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction D
+Oct 20, 2022 2:48:15.140465000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@73132ee6]
+Oct 20, 2022 2:48:15.141538000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@73132ee6]
+Oct 20, 2022 2:48:15.142373000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, L]
+Oct 20, 2022 2:48:15.143218000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction L
+Oct 20, 2022 2:48:15.950795000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@3fb9e27a]
+Oct 20, 2022 2:48:15.951781000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@3fb9e27a]
+Oct 20, 2022 2:48:15.952651000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, L]
+Oct 20, 2022 2:48:15.953483000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction L
+Oct 20, 2022 2:48:17.737572000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@bbdfcde]
+Oct 20, 2022 2:48:17.737958000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@bbdfcde]
+Oct 20, 2022 2:48:17.738153000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, L]
+Oct 20, 2022 2:48:17.738279000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction L
+Oct 20, 2022 2:48:17.738541000 PM comp512.ti.TreasureIsland move INFO: Player B got treasure points 6
+Oct 20, 2022 2:48:19.109997000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@6ed291be]
+Oct 20, 2022 2:48:19.111138000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@6ed291be]
+Oct 20, 2022 2:48:19.111955000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, U]
+Oct 20, 2022 2:48:19.112706000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction U
+Oct 20, 2022 2:48:19.113555000 PM comp512.ti.TreasureIsland move INFO: Player B got treasure points 7
+Oct 20, 2022 2:48:23.309097000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4dcf69c]
+Oct 20, 2022 2:48:23.310217000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4dcf69c]
+Oct 20, 2022 2:48:23.310824000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, U]
+Oct 20, 2022 2:48:23.311309000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction U
+Oct 20, 2022 2:48:23.990084000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@74067e4f]
+Oct 20, 2022 2:48:23.991102000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@74067e4f]
+Oct 20, 2022 2:48:23.991656000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, U]
+Oct 20, 2022 2:48:23.992123000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction U
+Oct 20, 2022 2:48:24.560918000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@10b9371d]
+Oct 20, 2022 2:48:24.561848000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@10b9371d]
+Oct 20, 2022 2:48:24.562395000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, U]
+Oct 20, 2022 2:48:24.563164000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction U
+Oct 20, 2022 2:48:27.368992000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@6a9c0bd5]
+Oct 20, 2022 2:48:27.370014000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@6a9c0bd5]
+Oct 20, 2022 2:48:27.370563000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, L]
+Oct 20, 2022 2:48:27.371079000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction L
+Oct 20, 2022 2:48:29.245440000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@997780c]
+Oct 20, 2022 2:48:29.246403000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@997780c]
+Oct 20, 2022 2:48:29.247225000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, L]
+Oct 20, 2022 2:48:29.247954000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction L
+Oct 20, 2022 2:48:30.587385000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4ea48b77]
+Oct 20, 2022 2:48:30.588352000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:lab2-27:40202:val:[Ljava.lang.Object;@4ea48b77]
+Oct 20, 2022 2:48:30.588925000 PM comp512st.tiapp.TreasureIslandApp run FINE: Received :[2, D]
+Oct 20, 2022 2:48:30.589385000 PM comp512.ti.TreasureIsland move INFO: Move request: player number 2 direction D
+Oct 20, 2022 2:48:30.589911000 PM comp512.ti.TreasureIsland move INFO: Player B got treasure points 8
+Oct 20, 2022 2:48:42.571093000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-27:40202: Received a message from. message: [senderProcess:CLOSE:val:null]
+Oct 20, 2022 2:48:42.572576000 PM comp512.gcl.GCL$GCLInbox run INFO: lab2-27:40202: Is closing connection. I will not get anymore messages from them.
+Oct 20, 2022 2:48:42.575042000 PM comp512.gcl.GCL$GCLInbox run INFO: lab2-27:40202: Closed incoming connection from this process. The inBox thread is shutdown.
+Oct 20, 2022 2:48:53.583539000 PM comp512st.tiapp.TreasureIslandApp main FINE: cmd is : E
+Oct 20, 2022 2:48:53.584267000 PM comp512st.tiapp.TreasureIslandApp main INFO: Shutting down Paxos
+Oct 20, 2022 2:48:54.585124000 PM comp512.gcl.GCL shutdownGCL INFO: GCL Shutdown request received.
+Oct 20, 2022 2:48:54.585865000 PM comp512.gcl.GCL$InboxListener shutdown INFO: Received request to shutdown GCL Inbox listener thread.
+Oct 20, 2022 2:48:54.587247000 PM comp512.gcl.GCL$InboxListener run INFO: GCL Inbox listener is now shutdown. We will not be accepting new incoming connections anymore.
+Oct 20, 2022 2:48:54.587908000 PM comp512.gcl.GCL shutdownGCL INFO: Inbox listener thread is now shutdown.
+Oct 20, 2022 2:48:54.588470000 PM comp512.gcl.GCL shutdownGCL INFO: Initiating broadcast of CLOSE message to all my outbound connections.
+Oct 20, 2022 2:48:54.589487000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-29:40102: Sending message to. message: [senderProcess:CLOSE:val:null]
+Oct 20, 2022 2:48:54.589505000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: lab2-27:40202: Sending message to. message: [senderProcess:CLOSE:val:null]
+Oct 20, 2022 2:48:54.591030000 PM comp512.gcl.GCL$GCLInbox run FINE: lab2-29:40102: Received a message from. message: [senderProcess:CLOSE:val:null]
+Oct 20, 2022 2:48:54.591535000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: lab2-29:40102: Detected CLOSE marker in the outgoing message. I am shutting down after this.
+Oct 20, 2022 2:48:54.591881000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: lab2-27:40202: Detected CLOSE marker in the outgoing message. I am shutting down after this.
+Oct 20, 2022 2:48:54.591803000 PM comp512.gcl.GCL$GCLInbox run INFO: lab2-29:40102: Is closing connection. I will not get anymore messages from them.
+Oct 20, 2022 2:48:54.593855000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: lab2-27:40202: Message despatch thread to the process is now shutdown. No more messages will be sent to that process.
+Oct 20, 2022 2:48:54.593581000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: lab2-29:40102: Message despatch thread to the process is now shutdown. No more messages will be sent to that process.
+Oct 20, 2022 2:48:54.594988000 PM comp512.gcl.GCL$GCLInbox run INFO: lab2-29:40102: Closed incoming connection from this process. The inBox thread is shutdown.
+Oct 20, 2022 2:48:54.602104000 PM comp512.gcl.GCL$GCLOutBoxDespatcher shutdown INFO: lab2-29:40102: Request initiated to shutdown the message despatcher thread for this process. The thread is currently alive.
+Oct 20, 2022 2:48:54.602652000 PM comp512.gcl.GCL$GCLOutBoxDespatcher shutdown INFO: lab2-27:40202: Request initiated to shutdown the message despatcher thread for this process. The thread is currently not alive.
+Oct 20, 2022 2:48:54.603789000 PM comp512.gcl.GCL shutdownGCL INFO: lab2-29:40102: GCL outbox despatcher thread for this process is now shutdown.
+Oct 20, 2022 2:48:54.604249000 PM comp512.gcl.GCL shutdownGCL INFO: lab2-27:40202: GCL outbox despatcher thread for this process is now shutdown.
+Oct 20, 2022 2:48:54.605351000 PM comp512.gcl.GCL$GCLInbox shutdown INFO: lab2-29:40102: Requesting shutdown for GCL message inbox thread from this process. This thread is currently not alive.
+Oct 20, 2022 2:48:54.606185000 PM comp512.gcl.GCL$GCLInbox shutdown INFO: lab2-29:40102: This thread has already terminated.
+Oct 20, 2022 2:48:54.606617000 PM comp512.gcl.GCL$GCLInbox shutdown INFO: lab2-27:40202: Requesting shutdown for GCL message inbox thread from this process. This thread is currently not alive.
+Oct 20, 2022 2:48:54.607084000 PM comp512.gcl.GCL$GCLInbox shutdown INFO: lab2-27:40202: This thread has already terminated.
+Oct 20, 2022 2:48:54.607937000 PM comp512.gcl.GCL shutdownGCL INFO: lab2-29:40102: GCL inbox thread for this proess is now shutdown.
+Oct 20, 2022 2:48:54.608366000 PM comp512.gcl.GCL shutdownGCL INFO: lab2-27:40202: GCL inbox thread for this proess is now shutdown.
+Oct 20, 2022 2:48:54.609110000 PM comp512.gcl.GCL readGCMessage INFO: GCL is being shutdown. No more messages will be delivered. Reader will be interrupted.
+Oct 20, 2022 2:48:54.613738000 PM comp512st.tiapp.TreasureIslandApp main INFO: Process terminated.
