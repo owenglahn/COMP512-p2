@@ -7,6 +7,7 @@ import comp512.utils.*;
 
 // Any other imports that you may need.
 import java.io.*;
+import java.util.Arrays;
 import java.util.logging.*;
 import java.net.UnknownHostException;
 
@@ -20,15 +21,21 @@ public class Paxos
 {
 	GCL gcl;
 	FailCheck failCheck;
+	Logger logger;
 
 	public Paxos(String myProcess, String[] allGroupProcesses, Logger logger, FailCheck failCheck) throws IOException, UnknownHostException
 	{
 		// Rember to call the failCheck.checkFailure(..) with appropriate arguments throughout your Paxos code to force fail points if necessary.
+		if (!Arrays.asList(allGroupProcesses).contains(myProcess)) {
+			throw new IllegalArgumentException("allGroupProcesses does not contain myProcess identifier");
+		}
 		this.failCheck = failCheck;
 
 		// Initialize the GCL communication system as well as anything else you need to.
-		this.gcl = new GCL(myProcess, allGroupProcesses, null, logger) ;
+		this.gcl = new GCL(myProcess, allGroupProcesses, null, logger);
 
+		// log things with the logger
+		this.logger = logger;
 	}
 
 	// This is what the application layer is going to call to send a message/value, such as the player and the move
