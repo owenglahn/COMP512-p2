@@ -7,6 +7,7 @@ import comp512.utils.*;
 
 // Any other imports that you may need.
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.*;
@@ -25,8 +26,15 @@ public class Paxos
 	FailCheck failCheck;
 	int processId;
 	int ballotId;
+	int maxBallotIdSeen;
+	int numProcesses;
 	String myProcess;
 	String[] allGroupProcesses;
+	int numRefuse;
+	int numAccept;
+	int highestAcceptedValue;
+	ArrayList<PaxosMessage> deliverableMessages;
+
 
 	public Paxos(String myProcess, String[] allGroupProcesses, Logger logger, FailCheck failCheck) throws IOException, UnknownHostException
 	{
@@ -34,14 +42,22 @@ public class Paxos
 
 		// sorts processes by hashcodes of host, port and uses indices to assign proc nums
 		// should prevent collisions, assumes all processes are known at start
+
+		// get all hashcodes for processes and check no collisions
 		List<Integer> hashCodes = Arrays.stream(allGroupProcesses).map(s -> s.hashCode())
 				.collect(Collectors.toList());
 		hashCodes.sort(Integer::compareTo);
 		// check no collisions (repeated ids)
 		assert(hashCodes.stream().collect(Collectors.toSet()).size() == hashCodes.size());
+
 		this.processId = hashCodes.indexOf(myProcess.hashCode());
 
+		// initial ballotID
 		this.ballotId = processId;
+		this.maxBallotIdSeen = 0;
+
+		this.numProcesses = hashCodes.size();
+
 		this.allGroupProcesses = allGroupProcesses;
 		// Rember to call the failCheck.checkFailure(..) with appropriate arguments throughout your Paxos code to force fail points if necessary.
 		this.failCheck = failCheck;
@@ -51,41 +67,230 @@ public class Paxos
 
 	}
 
-	public boolean propose() {
-		int maxBallot = ballotId;
+	private int computeNextBallotID() {
+		int nextBallotID = maxBallotIdSeen;
+		while (nextBallotID % numProcesses != processId) {
+			nextBallotID += 1;
+		}
+
+		// TODO: this might be sus
+		maxBallotIdSeen = nextBallotID;
+
+		return nextBallotID;
+	}
+
+//	public boolean propose() {
+//		// every replica must have a unique ballotId, between 0 and n-1
+//		// select the smallest sequence number s that is larger than any sequence number seen so far
+//		// s mod n = sequence number
+//
+//		int ballotId = computeNextBallotID();
+//
+//		try {
+//			// send propose with ballot ID
+//			gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId)));
+//			this.numRefuse = 0;
+//			this.numAccept = 0;
+//		} catch (NotSerializableException e) {
+//			System.err.println("Unable to serialize message. Skipping");
+//			e.printStackTrace();
+//		}
+//		// TODO: can probably remove all this
+//		try {
+//			int promises = 0;
+//			for (int i = 0; i < allGroupProcesses.length; i++) {
+//				GCMessage promise = gcl.readGCMessage();
+//				PaxosMessage paxosPromise = (PaxosMessage) promise.val;
+//				if ((int) paxosPromise.msg == ballotId) promises++;
+//				else if ((int) paxosPromise.msg > ballotId && (int) paxosPromise.msg > maxBallot) {
+//					maxBallot = (int) paxosPromise.msg;
+//				}
+//				if (promises > allGroupProcesses.length / 2) {
+//					return true;
+//				}
+//			}
+//		} catch (InterruptedException e) {
+//			// TODO: handle shutdown while blocking
+//		}
+//		ballotId = (maxBallot / allGroupProcesses.length + 1) * allGroupProcesses.length + processId;
+//		return false;
+//	}
+	public boolean promise() {
+		// TODO
+		return false;
+	}
+	public boolean receive() throws InterruptedException {
+		// if ballotID smaller than one received before.
+		// refuse and return highest ballotID seen so far
+
+		// TODO: catch this error and remove throws from method signiture
+		GCMessage gcmsg = gcl.readGCMessage();
+		PaxosMessage paxosMessage = (PaxosMessage) gcmsg.val;
+		int receivedBallotId = (int) paxosMessage.msg;
+		switch(paxosMessage.type){
+			// receive propose
+			case PROPOSE:
+				if (receivedBallotId >= this.maxBallotIdSeen) {
+					try {
+						gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId, null)),
+								gcmsg.senderProcess);
+						// log ballotID in persistent memory
+						this.maxBallotIdSeen = (int) paxosMessage.msg;
+					} catch (NotSerializableException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				else {
+					// refuse and return the highest ballotId seen so far
+					try {
+						gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.REFUSE, this.maxBallotIdSeen, null)),
+								gcmsg.senderProcess);
+					} catch (NotSerializableException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			// received a promise
+			case PROMISE:
+				// receive a majority of promises
+				this.numAccept += 1;
+				if (this.numAccept >= Math.floor(this.numProcesses) + 1) {
+					// TODO: if someone already accepted value of a proposer with smaller ballotID:
+					// find the most recent value that any responding acceptor accepted
+					// ask acceptor to accept this value
+					if (this.highestAcceptedValue < receivedBallotId){
+						// piggy back and promise with the new value;
+						// TODO:
+					}
+					else{
+						//send accept with any value
+						try {
+							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, receivedBallotId)),
+									gcmsg.senderProcess);
+							// TODO: send this value to every process with its corresponding value + ballotID
+						} catch (NotSerializableException e){
+							throw new RuntimeException(e);
+						}
+					}
+				}
+
+
+			case REFUSE:
+				this.numRefuse += 1;
+				this.maxBallotIdSeen = receivedBallotId;
+				if (this.numRefuse >= Math.floor(this.numProcesses) + 1) {
+					// TODO: propose again with a new ballotID
+					// TODO: handle ties
+				}
+			case VALUE:
+				// TODO:update most recently accepted value
+
+			case ACCEPT:
+				if (receivedBallotId > maxBallotIdSeen) {
+					// TODO: send accept to the process
+				}
+				else {
+					//TODO: send deny
+				}
+			case DENY:
+				// TOOD: deny
+			case CONFIRM:
+
+		}
+		// if no messages, this must be blocking
+//		return gcmsg.val;
+		return true;
+	}
+	// This is what the application layer is going to call to send a message/value, such as the player and the move
+	public void broadcastTOMsg(Object val) throws InterruptedException {
+		// propose phase
+		int ballotId = computeNextBallotID();
+
 		try {
+			// send propose with ballot ID
 			gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId)));
+			this.numRefuse = 0;
+			this.numAccept = 0;
 		} catch (NotSerializableException e) {
 			System.err.println("Unable to serialize message. Skipping");
 			e.printStackTrace();
 		}
-		try {
-			int promises = 0;
-			for (int i = 0; i < allGroupProcesses.length; i++) {
-				GCMessage promise = gcl.readGCMessage();
-				PaxosMessage paxosPromise = (PaxosMessage) promise.val;
-				if ((int) paxosPromise.msg == ballotId) promises++;
-				else if ((int) paxosPromise.msg > ballotId && (int) paxosPromise.msg > maxBallot) {
-					maxBallot = (int) paxosPromise.msg;
-				}
-				if (promises > allGroupProcesses.length / 2) {
-					return true;
-				}
-			}
-		} catch (InterruptedException e) {
-			// TODO: handle shutdown while blocking
-		}
-		ballotId = (maxBallot / allGroupProcesses.length + 1) * allGroupProcesses.length + processId;
-		return false;
-	}
-	// This is what the application layer is going to call to send a message/value, such as the player and the move
-	public void broadcastTOMsg(Object val)
-	{
-		// This is just a place holder.
 		// Extend this to build whatever Paxos logic you need to make sure the messaging system is total order.
 		// Here you will have to ensure that the CALL BLOCKS, and is returned ONLY when a majority (and immediately upon majority) of processes have accepted the value.
-		if (propose()) {
-			// TODO: send accept?
+		while (this.numAccept != (int) Math.floor(this.numProcesses/2) + 1) {
+			// keep reading messages until we are ready done
+			// TODO: catch this error and remove throws from method signature
+			GCMessage gcmsg = gcl.readGCMessage();
+			PaxosMessage paxosMessage = (PaxosMessage) gcmsg.val;
+			int receivedBallotId = (int) paxosMessage.msg;
+			switch(paxosMessage.type){
+				// receive propose
+				case PROPOSE:
+					if (receivedBallotId >= this.maxBallotIdSeen) {
+						try {
+							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId)),
+									gcmsg.senderProcess);
+							// log ballotID in persistent memory
+							this.maxBallotIdSeen = (int) paxosMessage.msg;
+						} catch (NotSerializableException e) {
+							throw new RuntimeException(e);
+						}
+					}
+					else {
+						// refuse and return the highest ballotId seen so far
+						try {
+							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.REFUSE, this.maxBallotIdSeen)),
+									gcmsg.senderProcess);
+						} catch (NotSerializableException e) {
+							throw new RuntimeException(e);
+						}
+					}
+					// received a promise
+				case PROMISE:
+					// receive a majority of promises
+					this.numAccept += 1;
+					if (this.numAccept >= Math.floor(this.numProcesses) + 1) {
+						// TODO: if someone already accepted value of a proposer with smaller ballotID:
+						// find the most recent value that any responding acceptor accepted
+						// ask acceptor to accept this value
+						if (this.highestAcceptedValue < receivedBallotId){
+							// piggy back and promise with the new value;
+							// TODO:
+						}
+						else{
+							//send accept with any value
+							try {
+								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, receivedBallotId)),
+										gcmsg.senderProcess);
+								// TODO: send this value to every process with its corresponding value + ballotID
+							} catch (NotSerializableException e){
+								throw new RuntimeException(e);
+							}
+						}
+					}
+
+
+				case REFUSE:
+					this.numRefuse += 1;
+					this.maxBallotIdSeen = receivedBallotId;
+					if (this.numRefuse >= Math.floor(this.numProcesses) + 1) {
+						// TODO: propose again with a new ballotID
+						// TODO: handle ties
+					}
+				case VALUE:
+					// TODO:update most recently accepted value
+
+				case ACCEPT:
+					if (receivedBallotId > maxBallotIdSeen) {
+						// TODO: send accept to the process
+					}
+					else {
+						//TODO: send deny
+					}
+				case DENY:
+					// TOOD: deny
+				case CONFIRM:
+
+			}
 		}
 	}
 
@@ -93,22 +298,11 @@ public class Paxos
 	// Messages delivered in ALL the processes in the group should deliver this in the same order.
 	public Object acceptTOMsg() throws InterruptedException
 	{
-		GCMessage gcmsg = gcl.readGCMessage();
-		PaxosMessage paxosMessage = (PaxosMessage) gcmsg.val;
-		switch(paxosMessage.type){
-			case PROPOSE:
-				if ((double) paxosMessage.msg > ballotId) {
-					try {
-						gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, ballotId)),
-								gcmsg.senderProcess);
-					} catch (NotSerializableException e) {
-						throw new RuntimeException(e);
-					}
-				}
-			case VALUE:
-
+		while (deliverableMessages.size() == 0) {
+			// block the process with a while loop
 		}
-		return gcmsg.val;
+		PaxosMessage message = deliverableMessages.remove(0);
+		return message.msg;
 	}
 
 	// Add any of your own shutdown code into this method.
@@ -118,15 +312,17 @@ public class Paxos
 	}
 
 	private enum MessageType {
-		PROPOSE, ACCEPT, VALUE, PROMISE
+		PROPOSE, ACCEPT, VALUE, PROMISE, REFUSE, DENY, CONFIRM
 	}
 	private class PaxosMessage implements Serializable {
 		MessageType type;
 		Object msg;
+		Object piggyback;
 
-		PaxosMessage(MessageType type, Object msg) {
+		PaxosMessage(MessageType type, Object msg, Object piggyback) {
 			this.type = type;
 			this.msg = msg;
+			this.piggyback = piggyback;
 		}
 	}
 }
