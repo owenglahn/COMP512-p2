@@ -202,12 +202,15 @@ public class Paxos
 	}
 	// This is what the application layer is going to call to send a message/value, such as the player and the move
 	public void broadcastTOMsg(Object val) throws InterruptedException {
+		// TODO: we might need to handle the case
+		// e.g process1 receives process1's own message
+		// Potential solution: Use gcl.multicast() instead of gcl.broadcast()
+
 		// propose phase
 		int ballotId = computeNextBallotID();
-
 		try {
-			// send propose with ballot ID
-			gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId)));
+			// send propose with ballot ID, nothing to piggyback
+			gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, null)));
 			this.numRefuse = 0;
 			this.numAccept = 0;
 		} catch (NotSerializableException e) {
@@ -216,18 +219,19 @@ public class Paxos
 		}
 		// Extend this to build whatever Paxos logic you need to make sure the messaging system is total order.
 		// Here you will have to ensure that the CALL BLOCKS, and is returned ONLY when a majority (and immediately upon majority) of processes have accepted the value.
-		while (this.numAccept != (int) Math.floor(this.numProcesses/2) + 1) {
+		while (this.numAccept != (int) Math.floor(this.numProcesses/2.0) + 1) {
 			// keep reading messages until we are ready done
 			// TODO: catch this error and remove throws from method signature
-			GCMessage gcmsg = gcl.readGCMessage();
+			GCMessage gcmsg = gcl.readGCMessage(); // this call blocks if there is no message, it waits :) very nice
 			PaxosMessage paxosMessage = (PaxosMessage) gcmsg.val;
 			int receivedBallotId = (int) paxosMessage.msg;
+
 			switch(paxosMessage.type){
 				// receive propose
 				case PROPOSE:
 					if (receivedBallotId >= this.maxBallotIdSeen) {
 						try {
-							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId)),
+							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId, null)),
 									gcmsg.senderProcess);
 							// log ballotID in persistent memory
 							this.maxBallotIdSeen = (int) paxosMessage.msg;
