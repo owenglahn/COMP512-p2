@@ -93,7 +93,7 @@ public class Paxos
 		return nextBallotID;
 	}
 
-	class ListenerThread extends Thread {
+	private class ListenerThread extends Thread {
 		public void run() {
 			while (true) {
 				GCMessage gcmsg = null; // this call blocks if there is no message, it waits :) very nice
