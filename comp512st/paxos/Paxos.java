@@ -43,6 +43,7 @@ public class Paxos extends Thread
 
 	Object acceptedValue;
 	ArrayList<Object> deliverableMessages;
+	ListenerThread listener;
 
 
 	public Paxos(String myProcess, String[] allGroupProcesses, Logger logger, FailCheck failCheck) throws IOException, UnknownHostException
@@ -74,6 +75,10 @@ public class Paxos extends Thread
 		// Initialize the GCL communication system as well as anything else you need to.
 		this.gcl = new GCL(myProcess, allGroupProcesses, null, logger) ;
 
+		// create thread for listener
+		listener = new ListenerThread();
+		listener.start();
+
 	}
 
 	private int computeNextBallotID() {
@@ -88,133 +93,135 @@ public class Paxos extends Thread
 		return nextBallotID;
 	}
 
-	public void run() {
-		while (true) {
-			GCMessage gcmsg = null; // this call blocks if there is no message, it waits :) very nice
-			try {
-				gcmsg = gcl.readGCMessage();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	class ListenerThread extends Thread {
+		public void run() {
+			while (true) {
+				GCMessage gcmsg = null; // this call blocks if there is no message, it waits :) very nice
+				try {
+					gcmsg = gcl.readGCMessage();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 
-			// parse messages
-			PaxosMessage paxosMessage = (PaxosMessage) gcmsg.val;
-			int receivedBallotId = (int) paxosMessage.msg;
-			Object piggyback = paxosMessage.piggyback;
+				// parse messages
+				PaxosMessage paxosMessage = (PaxosMessage) gcmsg.val;
+				int receivedBallotId = (int) paxosMessage.msg;
+				Object piggyback = paxosMessage.piggyback;
 
-			switch(paxosMessage.type){
-				// receive propose
-				case PROPOSE:
-					if (receivedBallotId >= this.maxBallotIdSeen) {
-						try {
-							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId,
-									acceptedValue)), gcmsg.senderProcess);
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
-						}
-						// log ballotID in persistent memory
-						this.maxBallotIdSeen = (int) paxosMessage.msg;
-					} else {
-						// refuse and return the highest ballotId seen so far
-						try {
-							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.REFUSE, this.maxBallotIdSeen, null)),
-									gcmsg.senderProcess);
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
-						}
-					}
-					// received a promise
-				case PROMISE:
-					this.numPromise += 1;
-					// receive a majority of promises
-					if (this.numPromise >= this.numProcesses / 2 + 1) {
-						// if someone already accepted value of a proposer with smaller ballotID:
-						if (this.maxBallotIdSeen < receivedBallotId) {
-							// piggyback and send accept with the new value;
+				switch (paxosMessage.type) {
+					// receive propose
+					case PROPOSE:
+						if (receivedBallotId >= maxBallotIdSeen) {
 							try {
-								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, receivedBallotId, piggyback)),
-										gcmsg.senderProcess);
+								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId,
+										acceptedValue)), gcmsg.senderProcess);
 							} catch (NotSerializableException e) {
 								e.printStackTrace();
 							}
-						} else{
-							// send this value to every process with its corresponding value + ballotID
+							// log ballotID in persistent memory
+							maxBallotIdSeen = (int) paxosMessage.msg;
+						} else {
+							// refuse and return the highest ballotId seen so far
 							try {
-								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, receivedBallotId, piggyback)),
+								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.REFUSE, maxBallotIdSeen, null)),
 										gcmsg.senderProcess);
 							} catch (NotSerializableException e) {
 								e.printStackTrace();
 							}
 						}
-					}
-					// receive a refuse promise
-				case REFUSE:
-					this.numRefuse += 1;
-					this.maxBallotIdSeen = Math.max(receivedBallotId, this.maxBallotIdSeen);
-					if (this.numRefuse >= Math.floor(this.numProcesses) + 1) {
-						// propose again with a new ballotID
-						int ballotId = computeNextBallotID();
-						try {
-							gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, null)));
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
+						// received a promise
+					case PROMISE:
+						numPromise += 1;
+						// receive a majority of promises
+						if (numPromise >= numProcesses / 2 + 1) {
+							// if someone already accepted value of a proposer with smaller ballotID:
+							if (maxBallotIdSeen < receivedBallotId) {
+								// piggyback and send accept with the new value;
+								try {
+									gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, receivedBallotId, piggyback)),
+											gcmsg.senderProcess);
+								} catch (NotSerializableException e) {
+									e.printStackTrace();
+								}
+							} else {
+								// send this value to every process with its corresponding value + ballotID
+								try {
+									gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, receivedBallotId, piggyback)),
+											gcmsg.senderProcess);
+								} catch (NotSerializableException e) {
+									e.printStackTrace();
+								}
+							}
 						}
-						this.numRefuse = 0;
-						this.numAccepted = 0;
-						this.numPromise = 0;
-					}
-					// receive a piggyback value
-				case VALUE:
-					this.acceptedValue = piggyback;
-					// receive accept
-				case ACCEPT:
-					// if still has the latest accepted ballot
-					if (receivedBallotId > maxBallotAccepted) {
-						this.acceptedValue = piggyback;
-						this.maxBallotAccepted = receivedBallotId;
-						try {
-							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPTED, receivedBallotId, piggyback)),
-									gcmsg.senderProcess);
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
+						// receive a refuse promise
+					case REFUSE:
+						numRefuse += 1;
+						maxBallotIdSeen = Math.max(receivedBallotId, maxBallotIdSeen);
+						if (numRefuse >= Math.floor(numProcesses) + 1) {
+							// propose again with a new ballotID
+							int ballotId = computeNextBallotID();
+							try {
+								gcl.broadcastMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, null)));
+							} catch (NotSerializableException e) {
+								e.printStackTrace();
+							}
+							numRefuse = 0;
+							numAccepted = 0;
+							numPromise = 0;
 						}
-					} else { // return deny
-						try {
-							gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.DENY, receivedBallotId, piggyback)),
-									gcmsg.senderProcess);
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
+						// receive a piggyback value
+					case VALUE:
+						acceptedValue = piggyback;
+						// receive accept
+					case ACCEPT:
+						// if still has the latest accepted ballot
+						if (receivedBallotId > maxBallotAccepted) {
+							acceptedValue = piggyback;
+							maxBallotAccepted = receivedBallotId;
+							try {
+								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPTED, receivedBallotId, piggyback)),
+										gcmsg.senderProcess);
+							} catch (NotSerializableException e) {
+								e.printStackTrace();
+							}
+						} else { // return deny
+							try {
+								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.DENY, receivedBallotId, piggyback)),
+										gcmsg.senderProcess);
+							} catch (NotSerializableException e) {
+								e.printStackTrace();
+							}
 						}
-					}
-				case ACCEPTED:
-					this.numAccepted += 1;
-					if (this.numAccepted >= Math.floor(this.numProcesses) + 1) {
-						this.deliverableMessages.add(piggyback);
-						try {
-							gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.CONFIRM, ballotId, piggyback)));
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
+					case ACCEPTED:
+						numAccepted += 1;
+						if (numAccepted >= Math.floor(numProcesses) + 1) {
+							deliverableMessages.add(piggyback);
+							try {
+								gcl.broadcastMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.CONFIRM, ballotId, piggyback)));
+							} catch (NotSerializableException e) {
+								e.printStackTrace();
+							}
 						}
-					}
-				case DENY:
-					// deny
-					this.numDenied += 1;
-					if (this.numDenied >= Math.floor(this.numProcesses) + 1) {
-						// give up on the instance, restart a round
-						// propose again with a new ballotID
-						int ballotId = computeNextBallotID();
-						try {
-							gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, null)));
-						} catch (NotSerializableException e) {
-							e.printStackTrace();
+					case DENY:
+						// deny
+						numDenied += 1;
+						if (numDenied >= Math.floor(numProcesses) + 1) {
+							// give up on the instance, restart a round
+							// propose again with a new ballotID
+							int ballotId = computeNextBallotID();
+							try {
+								gcl.broadcastMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, null)));
+							} catch (NotSerializableException e) {
+								e.printStackTrace();
+							}
+							numRefuse = 0;
+							numAccepted = 0;
+							numPromise = 0;
 						}
-						this.numRefuse = 0;
-						this.numAccepted = 0;
-						this.numPromise = 0;
-					}
-				case CONFIRM:
-					// put message into the message queue
-					this.deliverableMessages.add(piggyback);
+					case CONFIRM:
+						// put message into the message queue
+						deliverableMessages.add(piggyback);
+				}
 			}
 		}
 	}
