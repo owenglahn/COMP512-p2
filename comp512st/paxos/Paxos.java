@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 // extend / implement whatever interface, etc. as required.
 // NO OTHER public members / methods allowed. broadcastTOMsg, acceptTOMsg, and shutdownPaxos must be the only visible methods to the application layer.
 //		You should also not change the signature of these methods (arguments and return value) other aspects maybe changed with reasonable design needs.
-public class Paxos extends Thread
+public class Paxos
 {
 	GCL gcl;
 	FailCheck failCheck;
