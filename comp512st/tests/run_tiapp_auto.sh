@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #TODO set this to where your code and jar file root dir is
-BASEDIR=`pwd`/../../
+BASEDIR=/Users/owenglahn/CourseMaterial/U3F22/COMP512/COMP512-p2/
 
 #TODO update your group number here inpace of XX
 group=02
@@ -12,7 +12,7 @@ gameid=game-$group-99
 
 #TODO edit these entries to put the name of the server that you are using and the associated ports.
 # Remember to start the script from this host
-export autotesthost=lab2-29
+export autotesthost=Owens-MacBook-Air.local
 # player1 -> process 1, player 2 -> process 2, etc .. add more depending on how many players are playing.
 # Script automatically counts the variables to figure out the number of players.
 export process1=${autotesthost}:401$group
@@ -34,7 +34,7 @@ maxmoves=100 interval=100 randseed=1029384756
 #export failmode_N=AFTERBECOMINGLEADER
 #export failmode_N=AFTERVALUEACCEPT
 #For example this enabled failmode AFTERBECOMINGLEADER for player/process 2 (only one failmode can be set per process). It is important to have the export.
-export failmode_2=AFTERBECOMINGLEADER
+#export failmode_2=AFTERBECOMINGLEADER
 
 # Check if this script is being exectuted on the correct server.
 if [[ $autotesthost != $(hostname) ]]
@@ -67,6 +67,7 @@ export CLASSPATH=$BASEDIR/comp512p2.jar:$BASEDIR
 # Build the process group string.
 export processgroup=$(env | grep '^process[1-9]=' | sort | sed -e 's/.*=//')
 processgroup=$(echo $processgroup | sed -e 's/ /,/g')
+echo $processgroup
 
 # Total number of players
 numplayers=$(echo $processgroup | awk -F',' '{ print NF}')

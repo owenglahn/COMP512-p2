@@ -1,0 +1,14 @@
+Nov 03, 2022 7:23:21.529476000 PM comp512st.tests.TreasureIslandAppAuto main INFO: Started with arguments : [Owens-MacBook-Air.local:40102, Owens-MacBook-Air.local:40102,Owens-MacBook-Air.local:40202, game-02-99, 2, 1, 100, 100, 10293847561]
+Nov 03, 2022 7:23:21.544834000 PM comp512.utils.FailCheck <init> INFO: Initializing failure check emulation setup....
+Nov 03, 2022 7:23:21.569616000 PM comp512.gcl.GCL <init> SEVERE: IOException while determining my IP address java.net.BindException: Address already in use
+java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:555)
+	at java.base/sun.nio.ch.Net.bind(Net.java:544)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:643)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:388)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:274)
+	at comp512.gcl.GCL.<init>(GCL.java:604)
+	at comp512st.paxos.Paxos.<init>(Paxos.java:72)
+	at comp512st.tests.TreasureIslandAppAuto.main(TreasureIslandAppAuto.java:99)
+

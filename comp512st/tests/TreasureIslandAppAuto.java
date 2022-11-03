@@ -105,6 +105,7 @@ public class TreasureIslandAppAuto implements Runnable {
 		{
 			String cmd = moveGen.nextMove();
 			logger.fine("cmd is : " + cmd);
+			System.out.println("cmd is: " + cmd);
 			if (cmd.equals("E")) break;
 
 			switch (cmd) {
@@ -162,6 +163,7 @@ public class TreasureIslandAppAuto implements Runnable {
 			try {
 				Object[] info = (Object[]) paxos.acceptTOMsg();
 				logger.fine("Received :" + Arrays.toString(info));
+				System.out.println("Received :" + Arrays.toString(info));
 				move((Integer) info[0], (Character) info[1], updateDisplay);
 				//displayIsland(); //we do not want to keep constantly refreshing the output display.
 			} catch (InterruptedException ie) {

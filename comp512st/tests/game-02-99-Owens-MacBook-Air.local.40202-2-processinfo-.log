@@ -1,0 +1,54 @@
+Nov 03, 2022 7:25:30.445956000 PM comp512st.tests.TreasureIslandAppAuto main INFO: Started with arguments : [Owens-MacBook-Air.local:40202, Owens-MacBook-Air.local:40102,Owens-MacBook-Air.local:40202, game-02-99, 2, 2, 100, 100, 10293847562]
+Nov 03, 2022 7:25:30.453643000 PM comp512.utils.FailCheck <init> INFO: Initializing failure check emulation setup....
+Nov 03, 2022 7:25:30.467398000 PM comp512.gcl.GCL <init> INFO: Host Owens-MacBook-Air.local/192.168.0.11:40202
+Nov 03, 2022 7:25:30.467752000 PM comp512.gcl.GCL <init> INFO: Initializing outbox despatcher threads.
+Nov 03, 2022 7:25:30.468417000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40102: Starting outbox despatch thread for process.
+Nov 03, 2022 7:25:30.468560000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40202: Starting outbox despatch thread for process.
+Nov 03, 2022 7:25:30.472217000 PM comp512.ti.TreasureIsland <init> INFO: TIMONOCHROME is set to true, colors would be disabled.
+Nov 03, 2022 7:25:30.472481000 PM comp512.ti.TreasureIsland <init> INFO: Treasure Island initialized.
+Nov 03, 2022 7:25:30.488667000 PM comp512st.tests.TreasureIslandAppAuto$AutoMoveGenerator <init> INFO: AutoMoveGenerator setup maxmoves = 100, interval = 100, randseed = 10293847562, failmode = null
+Nov 03, 2022 7:25:30.489054000 PM comp512st.tests.TreasureIslandAppAuto$AutoMoveGenerator nextMove FINE: moveid = 25
+Nov 03, 2022 7:25:30.490006000 PM comp512st.tests.TreasureIslandAppAuto main FINE: cmd is : D
+Nov 03, 2022 7:25:30.491364000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : comp512st.paxos.Paxos$PaxosMessage@41cf53f9
+Nov 03, 2022 7:25:30.491736000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40102. comp512st.paxos.Paxos$PaxosMessage@41cf53f9
+Nov 03, 2022 7:25:30.492197000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40202. comp512st.paxos.Paxos$PaxosMessage@41cf53f9
+Nov 03, 2022 7:25:30.500227000 PM comp512.gcl.GCL$InboxListener run INFO: Network connection request from  /192.168.0.11
+Nov 03, 2022 7:25:30.511882000 PM comp512.gcl.GCL$InboxListener run INFO: Owens-MacBook-Air.local:40102: Input stream set up for this process to receive incoming messages. Inet: /192.168.0.11
+Nov 03, 2022 7:25:30.513132000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40102: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@41cf53f9]
+Nov 03, 2022 7:25:30.515520000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40202: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@41cf53f9]
+Nov 03, 2022 7:25:30.520660000 PM comp512.gcl.GCL$InboxListener run INFO: Network connection request from  /192.168.0.11
+Nov 03, 2022 7:25:30.521169000 PM comp512.gcl.GCL$InboxListener run INFO: Owens-MacBook-Air.local:40202: Input stream set up for this process to receive incoming messages. Inet: /192.168.0.11
+Nov 03, 2022 7:25:30.522002000 PM comp512.gcl.GCL$GCLInbox run INFO: Owens-MacBook-Air.local:40102: Starting an inBox thread to receive messages from this process.
+Nov 03, 2022 7:25:30.537858000 PM comp512.gcl.GCL$GCLInbox run INFO: Owens-MacBook-Air.local:40202: Starting an inBox thread to receive messages from this process.
+Nov 03, 2022 7:25:30.539062000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40102: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40102:val:comp512st.paxos.Paxos$PaxosMessage@bc5aa70]
+Nov 03, 2022 7:25:30.539814000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@79428544]
+Nov 03, 2022 7:25:30.541131000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40102:val:comp512st.paxos.Paxos$PaxosMessage@bc5aa70]
+Nov 03, 2022 7:25:30.545058000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40102. comp512st.paxos.Paxos$PaxosMessage@4c11feb9
+Nov 03, 2022 7:25:30.545342000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40102: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40102:val:comp512st.paxos.Paxos$PaxosMessage@620b4dcd]
+Nov 03, 2022 7:25:30.546314000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40102: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@4c11feb9]
+Nov 03, 2022 7:25:30.546229000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@79428544]
+Nov 03, 2022 7:25:30.548386000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40202. comp512st.paxos.Paxos$PaxosMessage@665efe14
+Nov 03, 2022 7:25:30.548980000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40102:val:comp512st.paxos.Paxos$PaxosMessage@620b4dcd]
+Nov 03, 2022 7:25:30.548999000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40202: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@665efe14]
+Nov 03, 2022 7:25:30.550436000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@7785641c]
+Nov 03, 2022 7:25:30.550853000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@7785641c]
+Nov 03, 2022 7:25:30.551061000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : comp512st.paxos.Paxos$PaxosMessage@1ba1ec23
+Nov 03, 2022 7:25:30.551244000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40102. comp512st.paxos.Paxos$PaxosMessage@1ba1ec23
+Nov 03, 2022 7:25:30.551528000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40202. comp512st.paxos.Paxos$PaxosMessage@1ba1ec23
+Nov 03, 2022 7:25:30.551571000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40102: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@1ba1ec23]
+Nov 03, 2022 7:25:30.551773000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40202: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@1ba1ec23]
+Nov 03, 2022 7:25:30.555964000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@73baee34]
+Nov 03, 2022 7:25:30.556698000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@73baee34]
+Nov 03, 2022 7:25:30.562089000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40202. comp512st.paxos.Paxos$PaxosMessage@1d822d4b
+Nov 03, 2022 7:25:30.566694000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40202: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@1d822d4b]
+Nov 03, 2022 7:25:30.568019000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@36b86e27]
+Nov 03, 2022 7:25:30.568252000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@36b86e27]
+Nov 03, 2022 7:25:30.569655000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40102: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40102:val:comp512st.paxos.Paxos$PaxosMessage@73b6c23a]
+Nov 03, 2022 7:25:30.570056000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40102:val:comp512st.paxos.Paxos$PaxosMessage@73b6c23a]
+Nov 03, 2022 7:25:30.570424000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : comp512st.paxos.Paxos$PaxosMessage@32958c92
+Nov 03, 2022 7:25:30.570760000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40102. comp512st.paxos.Paxos$PaxosMessage@32958c92
+Nov 03, 2022 7:25:30.571066000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40202. comp512st.paxos.Paxos$PaxosMessage@32958c92
+Nov 03, 2022 7:25:30.571105000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40102: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@32958c92]
+Nov 03, 2022 7:25:30.571273000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run FINE: Owens-MacBook-Air.local:40202: Sending message to. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@32958c92]
+Nov 03, 2022 7:25:30.572869000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@5b3da511]
+Nov 03, 2022 7:25:30.573379000 PM comp512.gcl.GCL readGCMessage INFO: Delivering message : [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@5b3da511]

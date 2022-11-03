@@ -1,3 +1,5 @@
+Still in loop
+Might be locked
 [H[2J
 -----------------------------------------------------------------------------
 | # |   | 4 |   |   |   |   |   |   | # |   | # |   |   |   |   |   |   |   |
@@ -25,3 +27,27 @@
 |   |   |   |   | # |   |   |   | # |   |   |   |   |   |   |   |   |   |   |
 -----------------------------------------------------------------------------
 [ A/0 ] [ B/0 ] 
+cmd is: U
+Owens-MacBook-Air.local:40102 Proposing 0
+Owens-MacBook-Air.local:40102 Received propose1
+Owens-MacBook-Air.local:40102Promising 1 to process Owens-MacBook-Air.local:40202
+Still in loop
+Might be locked
+Owens-MacBook-Air.local:40102 Received propose0
+Owens-MacBook-Air.local:40102 Refusing 0 to process Owens-MacBook-Air.local:40102
+Still in loop
+Might be locked
+Owens-MacBook-Air.local:40102 Received Refuse from Owens-MacBook-Air.local:40102
+Still in loop
+Might be locked
+Owens-MacBook-Air.local:40102 Received Refuse from Owens-MacBook-Air.local:40202
+Still in loop
+Might be locked
+Owens-MacBook-Air.local:40102 Received accept?(1,null) from Owens-MacBook-Air.local:40202
+Accepted ID: 1 PromiseId: 1
+Owens-MacBook-Air.local:40102 accepting value [Ljava.lang.Object;@550da3e0 from Owens-MacBook-Air.local:40202
+Still in loop
+Might be locked
+Owens-MacBook-Air.local:40102 Confirmed [Ljava.lang.Object;@550da3e0
+Still in loop
+Might be locked

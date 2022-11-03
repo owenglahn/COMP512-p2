@@ -34,6 +34,7 @@ public class Paxos
 	int numPromise;
 	int numAccepted;
 	int numDenied;
+	boolean confirmed = false;
 
 	ArrayList<Object> deliverableMessages;
 	ListenerThread listener;
@@ -59,6 +60,7 @@ public class Paxos
 		assert(hashCodes.stream().collect(Collectors.toSet()).size() == hashCodes.size());
 
 		this.processId = hashCodes.indexOf(myProcess.hashCode());
+		this.maxBallotIdSeen = this.processId;
 
 		this.numProcesses = hashCodes.size();
 
@@ -90,9 +92,12 @@ public class Paxos
 		Object acceptedValue;
 
 		public void run() {
+			this.setName("Listener for" + myProcess);
 			while (true) {
+				System.out.println("Still in loop");
 				GCMessage gcmsg = null; // this call blocks if there is no message, it waits :) very nice
 				try {
+					System.out.println("Might be locked");
 					gcmsg = gcl.readGCMessage();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -108,43 +113,35 @@ public class Paxos
 				switch (paxosMessage.type) {
 					// receive propose
 					case PROPOSE:
+						System.out.println(myProcess + " Received propose" + receivedBallotId);
 						failCheck.checkFailure(FailCheck.FailureType.RECEIVEPROPOSE); //to be invoked immediately when a process receives propose message.
-						// if receive your own message
-						if (receivedProcess == myProcess) {
-							this.promisedId = receivedBallotId;
-							maxBallotIdSeen = promisedId;
-							// promise on itself.
-							numPromise += 1;
-						}
-						else { // if receive message from others
-							if (receivedBallotId >= this.promisedId) {
-								// log ballotID in persistent memory
-								this.promisedId = receivedBallotId; // this is the max
-								// update max ballot for compute next id
-								maxBallotIdSeen = receivedBallotId;
+						if (receivedBallotId >= maxBallotIdSeen) {
+							// log ballotID in persistent memory
+							this.promisedId = receivedBallotId; // this is the max
+							// update max ballot for compute next id
+							maxBallotIdSeen = receivedBallotId;
 
-								try {
-									gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROMISE, receivedBallotId,
-											this.acceptedId, this.acceptedValue)), gcmsg.senderProcess);
-									// to be invoked immediately AFTER a process sends out its vote for leader election.
-									failCheck.checkFailure(FailCheck.FailureType.AFTERSENDVOTE);
-								} catch (NotSerializableException e) {
-									e.printStackTrace();
-								}
-							} else {
-								// refuse and return the highest ballotId seen so far
-								try {
-									gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.REFUSE, this.promisedId, this.acceptedId, this.acceptedValue)),
+							System.out.println(myProcess + "Promising " + this.promisedId + " to process " + gcmsg.senderProcess);
+						   gcl.sendMsg(new PaxosMessage(MessageType.PROMISE, this.promisedId,
+											this.acceptedId, this.acceptedValue), gcmsg.senderProcess);
+						   // to be invoked immediately AFTER a process sends out its vote for leader election.
+						   failCheck.checkFailure(FailCheck.FailureType.AFTERSENDVOTE);
+						} else {
+							System.out.println(myProcess + " Refusing " + receivedBallotId + " to process " + gcmsg.senderProcess);
+							// refuse and return the highest ballotId seen so far
+							 gcl.sendMsg(new PaxosMessage(MessageType.REFUSE, this.promisedId, this.acceptedId, this.acceptedValue),
 											gcmsg.senderProcess);
-									// to be invoked immediately AFTER a process sends out its vote for leader election.
-									failCheck.checkFailure(FailCheck.FailureType.AFTERSENDVOTE);
-								} catch (NotSerializableException e) {
-									e.printStackTrace();
-								}
-							}
+							 // to be invoked immediately AFTER a process sends out its vote for leader election.
+							 failCheck.checkFailure(FailCheck.FailureType.AFTERSENDVOTE);
 						}
+						break;
 						// received a promise
 					case PROMISE: // Note: promise is only sent to the proposer itself
+						System.out.println(myProcess + " Received Promise(" + receivedBallotId + ") from process "
+								+ gcmsg.senderProcess);
+						if (numPromise > numProcesses /2) {
+							break;
+						}
 						numPromise += 1;
 						if (receivedAcceptId > lastAcceptedID) {
 							lastAcceptedID = receivedAcceptId;
@@ -154,18 +151,13 @@ public class Paxos
 						}
 						// receive a majority of promises
 						if (numPromise >= numProcesses / 2 + 1) {
-							try {
-								if (this.proposedValue != null) {
-									gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, this.promisedId, receivedAcceptId, this.proposedValue)),
-											gcmsg.senderProcess);
-								} else {
-									gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPT, this.promisedId, receivedAcceptId, defaultAcceptValue)),
-											gcmsg.senderProcess);
-								}
-							} catch (NotSerializableException e) {
-								e.printStackTrace();
-							}
+							  if (this.proposedValue != null) {
+								   gcl.broadcastMsg(new PaxosMessage(MessageType.ACCEPT, this.promisedId, receivedAcceptId, this.proposedValue));
+							  } else {
+								   gcl.broadcastMsg(new PaxosMessage(MessageType.ACCEPT, this.promisedId, receivedAcceptId, defaultAcceptValue));
+							  }
 						}
+						break;
 					// receive a refuse promise
 					case REFUSE: // only the proposer would receive a refuse
 						numRefuse += 1;
@@ -177,47 +169,45 @@ public class Paxos
 							numAccepted = 0;
 							numPromise = 0;
 							numDenied = 0;
-							try {
-								gcl.broadcastMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, 0, null)));
-								// to be invoked immediately AFTER a process sends out its proposal to become a leader.
-								failCheck.checkFailure(FailCheck.FailureType.AFTERSENDPROPOSE);
-							} catch (NotSerializableException e) {
-								e.printStackTrace();
-							}
+							gcl.broadcastMsg(new PaxosMessage(MessageType.PROPOSE, ballotId, 0, null));
+							// to be invoked immediately AFTER a process sends out its proposal to become a leader.
+							failCheck.checkFailure(FailCheck.FailureType.AFTERSENDPROPOSE);
 						}
+						System.out.println(myProcess + " Received Refuse from " + gcmsg.senderProcess);
+						break;
 					// receive accept
 					case ACCEPT:
+						System.out.println(myProcess + " Received accept?(" + receivedBallotId + "," + proposedValue +
+								") from " +
+								gcmsg.senderProcess);
 						// if still has the latest accepted ballot
-						if (acceptedId > promisedId) {
+						System.out.println("Accepted ID: "  + receivedBallotId + " PromiseId: " + promisedId);
+						if (receivedBallotId == promisedId) {
 							this.promisedId = receivedBallotId;
 							this.acceptedValue = receivedAcceptedValue;
 							this.acceptedId = receivedAcceptId;
-							try {
-								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.ACCEPTED, this.acceptedId, this.acceptedId, this.acceptedValue)),
-										gcmsg.senderProcess);
-							} catch (NotSerializableException e) {
-								e.printStackTrace();
-							}
+							System.out.println(myProcess + " accepting value " + acceptedValue + " from " + gcmsg.senderProcess);
+							gcl.sendMsg(new PaxosMessage(MessageType.ACCEPTED, this.acceptedId, this.acceptedId, this.acceptedValue),
+									  gcmsg.senderProcess);
 						} else { // return deny
-							try {
-								gcl.sendMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.DENY, receivedBallotId, this.acceptedId, this.acceptedValue)),
-										gcmsg.senderProcess);
-							} catch (NotSerializableException e) {
-								e.printStackTrace();
-							}
+							  gcl.sendMsg(new PaxosMessage(MessageType.DENY, receivedBallotId, this.acceptedId, this.acceptedValue),
+									   gcmsg.senderProcess);
 						}
+
+						break;
 					case ACCEPTED:
-						if (numAccepted == numProcesses / 2) {
+						System.out.println(myProcess + " Received accepted " + acceptedId);
+						if (confirmed) {
+							break;
+						}
+						if (numAccepted >= numProcesses / 2) {
+							confirmed = true;
 							failCheck.checkFailure(FailCheck.FailureType.AFTERBECOMINGLEADER);
 							// to be invoked immediately AFTER a process sees that it has been accepted by the majority as the leader.
-							deliverableMessages.add(acceptedValue);
-							numAccepted += 1;
-							try {
-								gcl.broadcastMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.CONFIRM, receivedBallotId, acceptedId, acceptedValue)));
-							} catch (NotSerializableException e) {
-								e.printStackTrace();
-							}
+							gcl.broadcastMsg(new PaxosMessage(MessageType.CONFIRM, receivedBallotId, acceptedId, acceptedValue));
 						}
+						numAccepted += 1;
+						break;
 					case DENY:
 						// deny
 						numDenied += 1;
@@ -228,19 +218,18 @@ public class Paxos
 							numPromise = 0;
 							numDenied = 0;
 							// propose again with a new ballotID
-							try {
-								gcl.broadcastMsg(new GCMessage(myProcess, new PaxosMessage(MessageType.PROPOSE, computeNextBallotID(), 0, null)));
-								// to be invoked immediately AFTER a process sends out its proposal to become a leader.
-								failCheck.checkFailure(FailCheck.FailureType.AFTERSENDPROPOSE);
-							} catch (NotSerializableException e) {
-								e.printStackTrace();
-							}
+							gcl.broadcastMsg(new PaxosMessage(MessageType.PROPOSE, computeNextBallotID(), 0, null));
+							// to be invoked immediately AFTER a process sends out its proposal to become a leader.
+							failCheck.checkFailure(FailCheck.FailureType.AFTERSENDPROPOSE);
 						}
+						System.out.println(myProcess + " Denied " + receivedBallotId);
+						break;
 					case CONFIRM:
 						// put message into the message queue
 						deliverableMessages.add(acceptedValue);
 						failCheck.checkFailure(FailCheck.FailureType.AFTERVALUEACCEPT);
 						// to be invoked immediately by the process once a majority has accepted it’s proposed value.
+						System.out.println(myProcess + " Confirmed " + acceptedValue);
 				}
 			}
 		}
@@ -249,28 +238,25 @@ public class Paxos
 	// This is what the application layer is going to call to send a message/value, such as the player and the move
 	public void broadcastTOMsg(Object val) {
 		// propose phase
-		try {
-			// send propose with ballot ID, nothing to piggyback
-			int ballotId = computeNextBallotID();
-			maxBallotIdSeen = ballotId;
-			defaultAcceptValue = val;
-			gcl.broadcastMsg(new GCMessage(this.myProcess, new PaxosMessage(MessageType.PROPOSE, ballotId, 0, null)));
-			// to be invoked immediately AFTER a process sends out its proposal to become a leader.
-			failCheck.checkFailure(FailCheck.FailureType.AFTERSENDPROPOSE);
+		 // send propose with ballot ID, nothing to piggyback
+		 int ballotId = computeNextBallotID();
+		 maxBallotIdSeen = ballotId;
+		 defaultAcceptValue = val;
+		System.out.println(myProcess + " Proposing " + ballotId);
+		 gcl.broadcastMsg(new PaxosMessage(MessageType.PROPOSE, ballotId, 0, null));
+		 // to be invoked immediately AFTER a process sends out its proposal to become a leader.
+		 failCheck.checkFailure(FailCheck.FailureType.AFTERSENDPROPOSE);
 
-			this.numRefuse = 0;
-			this.numAccepted = 0;
-			this.numPromise = 0;
-
-		} catch (NotSerializableException e) {
-			System.err.println("Unable to serialize message. Skipping");
-			e.printStackTrace();
-		}
 		// Extend this to build whatever Paxos logic you need to make sure the messaging system is total order.
 		// Here you will have to ensure that the CALL BLOCKS, and is returned ONLY when a majority (and immediately upon majority) of processes have accepted the value.
 		while (this.numAccepted != (int) Math.floor(this.numProcesses/2.0) + 1) {
 			// block this thread from executing unless we have result
 		}
+		this.numRefuse = 0;
+		this.numAccepted = 0;
+		this.numPromise = 0;
+		this.numDenied = 0;
+		confirmed = false;
 	}
 
 	// This is what the application layer is calling to figure out what is the next message in the total order.
@@ -293,7 +279,7 @@ public class Paxos
 	private enum MessageType {
 		PROPOSE, ACCEPT, PROMISE, REFUSE, DENY, ACCEPTED, CONFIRM
 	}
-	private class PaxosMessage implements Serializable {
+	private static class PaxosMessage implements Serializable {
 		MessageType type;
 		int proposalID;
 		int acceptedID;

@@ -1,0 +1,4 @@
+Nov 03, 2022 5:47:19.394841000 PM comp512st.tests.TreasureIslandAppAuto main INFO: Started with arguments : [Owens-MacBook-Air.local:40202, Owens-MacBook-Air.local:40102
+Owens-MacBook-Air.local:40202, game-02-99, 1
+1, 2, 100, 100, 10293847562, AFTERBECOMINGLEADER]
+Nov 03, 2022 5:47:19.400958000 PM comp512.utils.FailCheck <init> INFO: Initializing failure check emulation setup....

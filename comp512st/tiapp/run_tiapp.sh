@@ -12,7 +12,7 @@ fi
 playernum=$1
 
 #TODO set this to where your code and jar file root dir is
-BASEDIR=$(PWD)
+BASEDIR=`pwd`/../../
 
 #TODO update your group number here inpace of XX
 group=02
