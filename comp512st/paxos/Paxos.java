@@ -68,6 +68,7 @@ public class Paxos
 
 		// Initialize the GCL communication system as well as anything else you need to.
 		this.gcl = new GCL(myProcess, allGroupProcesses, null, logger) ;
+		deliverableMessages = new ArrayList<>();
 
 		// create thread for listener
 		listener = new ListenerThread();
