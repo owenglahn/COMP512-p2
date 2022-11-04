@@ -1,0 +1,16 @@
+Nov 03, 2022 11:31:24.980149000 PM comp512st.tests.TreasureIslandAppAuto main INFO: Started with arguments : [Owens-MacBook-Air.local:40202, Owens-MacBook-Air.local:40102,Owens-MacBook-Air.local:40202,Owens-MacBook-Air.local:40302, game-02-99, 3, 2, 100, 100, 10293847]
+Nov 03, 2022 11:31:24.986342000 PM comp512.utils.FailCheck <init> INFO: Initializing failure check emulation setup....
+Nov 03, 2022 11:32:51.266461000 PM comp512.gcl.GCL <init> INFO: Host Owens-MacBook-Air.local/127.0.0.1:40202
+Nov 03, 2022 11:32:51.267500000 PM comp512.gcl.GCL <init> INFO: Initializing outbox despatcher threads.
+Nov 03, 2022 11:32:51.268930000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40102: Starting outbox despatch thread for process.
+Nov 03, 2022 11:32:51.268965000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40302: Starting outbox despatch thread for process.
+Nov 03, 2022 11:32:51.268979000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40202: Starting outbox despatch thread for process.
+Nov 03, 2022 11:32:51.273132000 PM comp512.ti.TreasureIsland <init> INFO: Treasure Island initialized.
+Nov 03, 2022 11:32:51.287263000 PM comp512st.tests.TreasureIslandAppAuto$AutoMoveGenerator <init> INFO: AutoMoveGenerator setup maxmoves = 100, interval = 100, randseed = 10293847, failmode = null
+Nov 03, 2022 11:32:51.287799000 PM comp512st.tests.TreasureIslandAppAuto$AutoMoveGenerator nextMove FINE: moveid = 32
+Nov 03, 2022 11:32:51.288180000 PM comp512st.tests.TreasureIslandAppAuto main FINE: cmd is : R
+Nov 03, 2022 11:32:51.289736000 PM comp512.gcl.GCL broadcastMsg FINE: Broadcast message request received. Translating to point-to-point messages : comp512st.paxos.Paxos$PaxosMessage@18769467
+Nov 03, 2022 11:32:51.290214000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40102. comp512st.paxos.Paxos$PaxosMessage@18769467
+Nov 03, 2022 11:32:51.290897000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40202. comp512st.paxos.Paxos$PaxosMessage@18769467
+Nov 03, 2022 11:32:51.292552000 PM comp512.gcl.GCL sendMsg FINE: Request received to send message to Owens-MacBook-Air.local:40302. comp512st.paxos.Paxos$PaxosMessage@18769467
+Nov 03, 2022 11:32:51.296857000 PM comp512.gcl.GCL$InboxListener run INFO: Network connection request from  /127.0.0.1

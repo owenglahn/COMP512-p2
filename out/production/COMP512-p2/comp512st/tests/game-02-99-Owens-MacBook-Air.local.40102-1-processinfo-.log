@@ -1,0 +1,10 @@
+Nov 03, 2022 11:25:40.014709000 PM comp512st.tests.TreasureIslandAppAuto main INFO: Started with arguments : [Owens-MacBook-Air.local:40102, Owens-MacBook-Air.local:40102,Owens-MacBook-Air.local:40202, game-02-99, 2, 1, 100, 100, 10293847561]
+Nov 03, 2022 11:25:40.020108000 PM comp512.utils.FailCheck <init> INFO: Initializing failure check emulation setup....
+Nov 03, 2022 11:25:40.037613000 PM comp512.gcl.GCL <init> INFO: Host Owens-MacBook-Air.local/192.168.0.11:40102
+Nov 03, 2022 11:25:40.037984000 PM comp512.gcl.GCL <init> INFO: Initializing outbox despatcher threads.
+Nov 03, 2022 11:25:40.039738000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40102: Starting outbox despatch thread for process.
+Nov 03, 2022 11:25:40.039821000 PM comp512.gcl.GCL$GCLOutBoxDespatcher run INFO: Owens-MacBook-Air.local:40202: Starting outbox despatch thread for process.
+Nov 03, 2022 11:29:08.485222000 PM comp512.gcl.GCL$InboxListener run INFO: Network connection request from  /192.168.0.11
+Nov 03, 2022 11:29:08.493660000 PM comp512.gcl.GCL$InboxListener run INFO: Owens-MacBook-Air.local:40202: Input stream set up for this process to receive incoming messages. Inet: /192.168.0.11
+Nov 03, 2022 11:29:08.494279000 PM comp512.gcl.GCL$GCLInbox run INFO: Owens-MacBook-Air.local:40202: Starting an inBox thread to receive messages from this process.
+Nov 03, 2022 11:29:08.509050000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@1ef92578]
