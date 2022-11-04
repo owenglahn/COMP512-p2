@@ -7,9 +7,10 @@ import comp512.utils.*;
 
 // Any other imports that you may need.
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.*;
 import java.net.UnknownHostException;
 import java.util.stream.Collectors;
@@ -34,12 +35,11 @@ public class Paxos
 	int numPromise;
 	int numAccepted;
 	int numDenied;
-	boolean confirmed = false;
 
-	ArrayList<Object> deliverableMessages;
+	BlockingQueue<Object> deliverableMessages;
 	ListenerThread listener;
 
-	int maxBallotIdSeen;
+	int maxBallotIdSeen = 0;
 	int lastAcceptedID;
 	Object defaultAcceptValue;
 
@@ -60,7 +60,7 @@ public class Paxos
 		assert(hashCodes.stream().collect(Collectors.toSet()).size() == hashCodes.size());
 
 		this.processId = hashCodes.indexOf(myProcess.hashCode());
-		this.maxBallotIdSeen = this.processId;
+//		this.maxBallotIdSeen = this.processId;
 
 		this.numProcesses = hashCodes.size();
 
@@ -70,7 +70,7 @@ public class Paxos
 
 		// Initialize the GCL communication system as well as anything else you need to.
 		this.gcl = new GCL(myProcess, allGroupProcesses, null, logger) ;
-		deliverableMessages = new ArrayList<>();
+		deliverableMessages = new LinkedBlockingQueue<>();
 
 		// create thread for listener
 		listener = new ListenerThread();
@@ -78,11 +78,8 @@ public class Paxos
 	}
 
 	private int computeNextBallotID() {
-		int nextBallotID = maxBallotIdSeen;
-		while (nextBallotID % numProcesses != processId) {
-			nextBallotID += 1;
-		}
-		return nextBallotID;
+		int amountToAdd = (int) Math.ceil((double) maxBallotIdSeen / (double) numProcesses) * numProcesses;
+		return this.processId + amountToAdd;
 	}
 
 	private class ListenerThread extends Thread {
@@ -94,10 +91,8 @@ public class Paxos
 		public void run() {
 			this.setName("Listener for" + myProcess);
 			while (true) {
-				System.out.println("Still in loop");
 				GCMessage gcmsg = null; // this call blocks if there is no message, it waits :) very nice
 				try {
-					System.out.println("Might be locked");
 					gcmsg = gcl.readGCMessage();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -197,16 +192,17 @@ public class Paxos
 						break;
 					case ACCEPTED:
 						System.out.println(myProcess + " Received accepted " + acceptedId);
-						if (confirmed) {
-							break;
-						}
+						System.out.println(myProcess + "Has num accepted" + numAccepted);
 						if (numAccepted >= numProcesses / 2) {
-							confirmed = true;
 							failCheck.checkFailure(FailCheck.FailureType.AFTERBECOMINGLEADER);
 							// to be invoked immediately AFTER a process sees that it has been accepted by the majority as the leader.
 							gcl.broadcastMsg(new PaxosMessage(MessageType.CONFIRM, receivedBallotId, acceptedId, acceptedValue));
+							synchronized (Paxos.this) {
+								Paxos.this.notify();
+							}
 						}
 						numAccepted += 1;
+						System.out.println("After receving accepted " + numAccepted);
 						break;
 					case DENY:
 						// deny
@@ -226,7 +222,13 @@ public class Paxos
 						break;
 					case CONFIRM:
 						// put message into the message queue
-						deliverableMessages.add(acceptedValue);
+						System.out.println(((Object[]) acceptedValue)[1]);
+						try {
+							deliverableMessages.put(acceptedValue);
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+							System.err.println("Thread interrupted");
+						}
 						failCheck.checkFailure(FailCheck.FailureType.AFTERVALUEACCEPT);
 						// to be invoked immediately by the process once a majority has accepted it’s proposed value.
 						System.out.println(myProcess + " Confirmed " + acceptedValue);
@@ -240,6 +242,7 @@ public class Paxos
 		// propose phase
 		 // send propose with ballot ID, nothing to piggyback
 		 int ballotId = computeNextBallotID();
+		System.out.println("Calling broadcast with ballotID: " + ballotId);
 		 maxBallotIdSeen = ballotId;
 		 defaultAcceptValue = val;
 		System.out.println(myProcess + " Proposing " + ballotId);
@@ -249,30 +252,34 @@ public class Paxos
 
 		// Extend this to build whatever Paxos logic you need to make sure the messaging system is total order.
 		// Here you will have to ensure that the CALL BLOCKS, and is returned ONLY when a majority (and immediately upon majority) of processes have accepted the value.
-		while (this.numAccepted != (int) Math.floor(this.numProcesses/2.0) + 1) {
 			// block this thread from executing unless we have result
+		synchronized (this) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				System.err.println("Thread interrupted");
+			}
 		}
+		System.out.println("Finished one execution");
+		System.out.println("Size of deliverable messages" + deliverableMessages.size());
 		this.numRefuse = 0;
 		this.numAccepted = 0;
 		this.numPromise = 0;
 		this.numDenied = 0;
-		confirmed = false;
 	}
 
 	// This is what the application layer is calling to figure out what is the next message in the total order.
 	// Messages delivered in ALL the processes in the group should deliver this in the same order.
 	public Object acceptTOMsg() throws InterruptedException
 	{
-		while (deliverableMessages.size() == 0) {
-			// block the process with a while loop
-		}
-		return deliverableMessages.remove(0);
+		return deliverableMessages.take();
 	}
 
 	// Add any of your own shutdown code into this method.
 	public void shutdownPaxos()
 	{
-		deliverableMessages = new ArrayList<>();
+		// TODO: close sockets
 		gcl.shutdownGCL();
 	}
 

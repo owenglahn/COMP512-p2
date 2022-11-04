@@ -34,7 +34,7 @@ maxmoves=100 interval=100 randseed=1029384756
 #export failmode_N=AFTERBECOMINGLEADER
 #export failmode_N=AFTERVALUEACCEPT
 #For example this enabled failmode AFTERBECOMINGLEADER for player/process 2 (only one failmode can be set per process). It is important to have the export.
-export failmode_2=AFTERBECOMINGLEADER
+#export failmode_2=AFTERBECOMINGLEADER
 
 # Check if this script is being exectuted on the correct server.
 if [[ $autotesthost != $(hostname) ]]
@@ -67,6 +67,7 @@ export CLASSPATH=$BASEDIR/comp512p2.jar:$BASEDIR
 # Build the process group string.
 export processgroup=$(env | grep '^process[1-9]=' | sort | sed -e 's/.*=//')
 processgroup=$(echo $processgroup | sed -e 's/ /,/g')
+echo $processgroup
 
 # Total number of players
 numplayers=$(echo $processgroup | awk -F',' '{ print NF}')
@@ -75,7 +76,7 @@ echo "There are $numplayers players in the setup"
 # We do not need colors to track.
 export TIMONOCHROME=true
 # We do not want the island display to get constantly refreshed.
-export UPDATEDISPLAY=false
+export UPDATEDISPLAY=true
 
 playernum=1
 for process in $(echo $processgroup | sed -e 's/,/ /g')

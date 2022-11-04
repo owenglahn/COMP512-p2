@@ -76,7 +76,7 @@ echo "There are $numplayers players in the setup"
 # We do not need colors to track.
 export TIMONOCHROME=true
 # We do not want the island display to get constantly refreshed.
-export UPDATEDISPLAY=false
+export UPDATEDISPLAY=true
 
 playernum=1
 for process in $(echo $processgroup | sed -e 's/,/ /g')

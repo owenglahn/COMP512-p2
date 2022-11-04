@@ -8,12 +8,3 @@ Nov 03, 2022 11:29:08.485222000 PM comp512.gcl.GCL$InboxListener run INFO: Netwo
 Nov 03, 2022 11:29:08.493660000 PM comp512.gcl.GCL$InboxListener run INFO: Owens-MacBook-Air.local:40202: Input stream set up for this process to receive incoming messages. Inet: /192.168.0.11
 Nov 03, 2022 11:29:08.494279000 PM comp512.gcl.GCL$GCLInbox run INFO: Owens-MacBook-Air.local:40202: Starting an inBox thread to receive messages from this process.
 Nov 03, 2022 11:29:08.509050000 PM comp512.gcl.GCL$GCLInbox run FINE: Owens-MacBook-Air.local:40202: Received a message from. message: [senderProcess:Owens-MacBook-Air.local:40202:val:comp512st.paxos.Paxos$PaxosMessage@1ef92578]
-Nov 03, 2022 11:31:39.571054000 PM comp512.gcl.GCL$GCLInbox run SEVERE: Owens-MacBook-Air.local:40202: Socket was closed at the other end. Encountered EOFException while reading from. java.io.EOFException
-java.io.EOFException
-	at java.base/java.io.ObjectInputStream$BlockDataInputStream.peekByte(ObjectInputStream.java:3192)
-	at java.base/java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1693)
-	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:514)
-	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:472)
-	at comp512.gcl.GCL$GCLInbox.run(GCL.java:279)
-
-Nov 03, 2022 11:31:39.573509000 PM comp512.gcl.GCL$GCLInbox run INFO: Owens-MacBook-Air.local:40202: Closed incoming connection from this process. The inBox thread is shutdown.
