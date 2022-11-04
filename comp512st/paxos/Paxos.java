@@ -35,7 +35,6 @@ public class Paxos
 	int numPromise;
 	int numAccepted;
 	int numDenied;
-	boolean confirmed = false;
 
 	BlockingQueue<Object> deliverableMessages;
 	ListenerThread listener;
@@ -183,11 +182,7 @@ public class Paxos
 
 						break;
 					case ACCEPTED:
-						if (confirmed) {
-							break;
-						}
 						if (numAccepted >= numProcesses / 2) {
-							confirmed = true;
 							failCheck.checkFailure(FailCheck.FailureType.AFTERBECOMINGLEADER);
 							// to be invoked immediately AFTER a process sees that it has been accepted by the majority as the leader.
 							gcl.broadcastMsg(new PaxosMessage(MessageType.CONFIRM, receivedBallotId, acceptedId, acceptedValue));
@@ -251,7 +246,6 @@ public class Paxos
 				System.err.println("Thread interrupted");
 			}
 		}
-		confirmed = false;
 		this.numRefuse = 0;
 		this.numAccepted = 0;
 		this.numPromise = 0;
